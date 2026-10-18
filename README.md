@@ -1,3 +1,19 @@
+## Start testing now — no server required
+
+**[Open Table Companion on iPhone](https://ptravnicek.github.io/kemet-ai-companion/table.html)** (GitHub Pages must be enabled under Settings → Pages, main / root).
+
+The new [table.html](./table.html) is an independent, single-file mobile app with:
+
+- Manual board regions (rename/add), physical troop counts and creature notes.
+- Both players' prayer, VP, action tokens and pyramid levels.
+- Action recording and basic AI action suggestions (not a strong autonomous player).
+- Six editable AI battle cards and separate DI / power tile lists.
+- Secret-in-normal-UI AI played/discarded card commitment and deterministic battle calculation.
+- Local browser autosave, JSON import/export, undo and phone camera reference.
+- No server, authentication, OpenAI API key or cloud VM.
+
+**Testing limits:** The app is a physical-board assistant and battle test harness, not a rules-complete automated opponent. You must validate movement, action legality, power tile costs, DI effects, retreat/recall and VP conditions from the manual. All combat bonuses must be entered by hand. Hidden cards are stored in local browser data, not cryptographically protected. The app's battle-card selection is a basic heuristic. The physical card faces and full card reference data have not been supplied; you must transcribe them from your own components. Photos are not interpreted by computer vision. Avoid Safari Private Browsing if you need persistent game saves; export JSON backups.
+
 # Kemet AI Companion
 
 Mobile-first, unofficial companion for the **original Matagot Kemet (2018 printing)**. Designed for one human player controlling a physical tabletop board against a future digital AI opponent.
