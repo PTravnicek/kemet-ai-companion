@@ -52,3 +52,21 @@ The user supplied an eight-page photographed manual for the original 2018 Matago
 ## Legal
 
 Unofficial fan project. No Matagot artwork or scanned rulebook is redistributed in this repository.
+
+## New: live API Battle Room (v0.3 frontend)
+
+Open [battle.html](./battle.html) on mobile (or, once GitHub Pages is enabled, [the Battle Room](https://ptravnicek.github.io/kemet-ai-companion/battle.html)). It is a client for the separate FastAPI backend, **not** a self-contained game.
+
+To play a server-backed battle:
+
+1. Deploy `server/` to an HTTPS Python/container host with persistent storage and configure `ALLOWED_ORIGINS=https://ptravnicek.github.io`.
+2. Enter the backend HTTPS URL in the Battle Room.
+3. Transcribe all six original battle card names and strength/damage/protection stats from your physical set. Card data is not bundled.
+4. Create a session, enter combatants and manually verified bonuses, then commit the AI's two cards.
+5. Commit your physical played and discarded cards, enter your played card's stats, and reveal the result.
+
+GitHub Pages is static hosting; it cannot execute the backend. Until a backend is deployed, the Battle Room is a functional interface but not an end-to-end playable experience.
+
+**Security and accuracy:** This is still an experimental single-player prototype, with no account system or rate limiting. The game bearer token is stored in the phone's local storage; anyone with that token can access and advance the session. AI hidden cards stay in server storage and are not sent before reveal, but a database operator can see them. The SHA-256 commitment is not yet independently verifiable because the discard and nonce are not disclosed. The battle engine does not yet handle all Kemet rules, and AI card choice uses a deterministic heuristic rather than an LLM.
+
+Backend tests are defined in [server/test_app.py](./server/test_app.py) and run via [GitHub Actions](./.github/workflows/backend-tests.yml). A workflow definition is not proof that tests have passed.
