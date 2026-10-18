@@ -1,0 +1,29 @@
+name: V3 validation
+on:
+  push:
+    paths: ['v3/**', 'tests/v3*', '.github/workflows/v3-validation.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate V3 core when present
+        run: |
+          if [ -f tests/v3.test.mjs ]; then node --test tests/v3.test.mjs; fi
+      - name: Development source bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: kemet-development-source
+          path: |
+            v2/
+            v3/
+            docs/
+            tests/
+          if-no-files-found: error
+          retention-days: 3
