@@ -11,7 +11,7 @@
 <section id="board" class="hidden"><div class="panel"><h2>Board camera</h2><p>Take an overhead picture. This prototype displays the photo locally; automated recognition will be added later.</p><label for="camera">Capture / choose photo</label><input type="file" id="camera" accept="image/*" capture="environment"><img id="preview" class="hidden" alt="Board photograph"><label for="boardNotes">Board state notes</label><textarea id="boardNotes" placeholder="Who controls each temple? Unit positions? Pyramids?"></textarea><div class="actions"><button id="saveBoard">Save board notes</button></div></div></section>
 <section id="history" class="hidden"><div class="panel"><h2>Session event log</h2><ol id="events"></ol><div class="actions"><button class="secondary" id="export">Export game JSON</button><button class="secondary" id="resetAll">Reset all local data</button></div></div></section>
 <footer>Unofficial fan-made companion · Not affiliated with Matagot</footer>
-</main><script>
+<div class="panel"><h2>New: Table Companion</h2><p>Use the complete manual board mirror, player resources, AI card inventory, local battle assistant, and game saves — no server required.</p><a href="./table.html" style="display:block;padding:14px;background:#d3ac69;color:#17202d;border-radius:10px;text-align:center;font-weight:bold">Open Table Companion →</a></div></main><script>
 const KEY='kemet-companion-v01';
 const fresh=()=>({prayer:5,victory:0,actions:5,boardNotes:'',events:[],battle:{phase:'select',play:null,discard:null}});
 let s;try{s=JSON.parse(localStorage.getItem(KEY))||fresh()}catch{s=fresh()}
