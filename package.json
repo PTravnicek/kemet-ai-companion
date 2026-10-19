@@ -1,0 +1,12 @@
+{
+  "name": "kemet-tabletop-companion",
+  "version": "3.0.0-beta.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node scripts/serve.mjs",
+    "test": "node --test tests/core.test.mjs tests/v3.test.mjs",
+    "build:standalone": "python3 scripts/build-preview.py"
+  },
+  "engines": {"node": ">=22"}
+}

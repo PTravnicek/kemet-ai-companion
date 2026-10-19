@@ -1,29 +1,51 @@
-name: V3 validation
+name: V3 rules and browser validation
 on:
   push:
-    paths: ['v3/**', 'tests/v3*', '.github/workflows/v3-validation.yml']
+    paths: ['v3/**', 'v2/**', 'tests/v3*', 'scripts/**', 'package.json', '.github/workflows/v3-validation.yml']
+  pull_request:
+    paths: ['v3/**', 'v2/**', 'tests/v3*', 'scripts/**', 'package.json', '.github/workflows/v3-validation.yml']
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
   validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Validate V3 core when present
-        run: |
-          if [ -f tests/v3.test.mjs ]; then node --test tests/v3.test.mjs; fi
-      - name: Development source bundle
-        uses: actions/upload-artifact@v4
+      - uses: actions/setup-python@v5
         with:
-          name: kemet-development-source
+          python-version: '3.12'
+      - name: Core tests (V2 regression and V3 rules)
+        run: npm test
+      - name: Install pinned browser tools
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium webkit
+      - name: Real HTTP Chromium and WebKit tests
+        env:
+          BROWSERS: chromium,webkit
+        run: python tests/v3-browser.py
+      - name: Keep local HTTP evidence
+        run: mv v3-browser-results.json v3-local-http-results.json
+      - name: Verify GitHub Pages bytes
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: python scripts/wait-v3-pages.py
+      - name: Test published site in WebKit
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        env:
+          BROWSERS: webkit
+          BASE_URL: https://ptravnicek.github.io/kemet-ai-companion/v3/
+        run: python tests/v3-browser.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kemet-v3-validation
           path: |
-            v2/
-            v3/
-            docs/
-            tests/
-          if-no-files-found: error
-          retention-days: 3
+            v3-*-results.json
+            v3-live-deployment.json
+            v3-*.png
+          if-no-files-found: warn
