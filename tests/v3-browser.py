@@ -117,5 +117,5 @@ with sync_playwright() as pw:
         assert page.evaluate('kemet.getState().players.human.prayer')==5
         report.append({'browser':name,'storage_blocked':'payment controls still work'})
         browser.close()
-(ROOT/'v3-dom-results.json' if DOM else 'v3-browser-results.json').write_text(json.dumps(report,indent=2))
+(ROOT / ('v3-dom-results.json' if DOM else 'v3-browser-results.json')).write_text(json.dumps(report,indent=2))
 if server:server.shutdown()
